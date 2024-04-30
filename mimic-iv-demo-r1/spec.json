@@ -1,0 +1,560 @@
+{
+  "meta" : {
+    "location" : "src/test/resources/data/mimic-iv-demo",
+    "tmpLocation" : "/private/work/github-amida/profiles-ingest/sandbox",
+    "partitionKey" : "ReferenceId"
+  },
+  "nodeSpecs" : [ {
+    "label" : "Patient",
+    "source" : "hosp/patients.csv",
+    "idField" : "subject_id",
+    "edgeSpecs" : [ {
+      "label" : "has_omr",
+      "toLabel" : "Omr",
+      "toField" : "subject_id"
+    }, {
+      "label" : "has",
+      "toLabel" : "LabEvent",
+      "toField" : "subject_id"
+    } ]
+  }, {
+    "label" : "Admission",
+    "source" : "hosp/admissions.csv",
+    "idField" : "hadm_id",
+    "edgeSpecs" : [ {
+      "label" : "belongs_to",
+      "toLabel" : "Patient",
+      "toField" : "subject_id"
+    }, {
+      "label" : "has_diagnosis",
+      "toLabel" : "Diagnosis",
+      "toField" : "hadm_id"
+    }, {
+      "label" : "has_procedure",
+      "toLabel" : "Procedure",
+      "toField" : "hadm_id"
+    }, {
+      "label" : "coded_as",
+      "toLabel" : "DrgCode",
+      "toField" : "hadm_id"
+    }, {
+      "label" : "has_event",
+      "toLabel" : "HcpcsEvent",
+      "toField" : "hadm_id"
+    }, {
+      "label" : "has_event",
+      "toLabel" : "LabEvent",
+      "toField" : "hadm_id"
+    }, {
+      "label" : "has_emar",
+      "toLabel" : "Emar",
+      "toField" : "hadm_id"
+    }, {
+      "label" : "has_event",
+      "toLabel" : "MicroBiologyEvent",
+      "toField" : "hadm_id"
+    }, {
+      "label" : "has_pharmacy",
+      "toLabel" : "Pharmacy",
+      "toField" : "hadm_id"
+    }, {
+      "label" : "has_poe",
+      "toLabel" : "Poe",
+      "toField" : "hadm_id"
+    }, {
+      "label" : "has_service",
+      "toLabel" : "Service",
+      "toField" : "hadm_id"
+    }, {
+      "label" : "has_transfer",
+      "toLabel" : "Transfer",
+      "toField" : "hadm_id"
+    }, {
+      "label" : "contains_icu_stay",
+      "toLabel" : "IcuStay",
+      "toField" : "hadm_id"
+    }, {
+      "label" : "admitted_by",
+      "toLabel" : "Provider",
+      "toField" : "provider_id",
+      "fromField" : "admit_provider_id"
+    } ],
+    "propertySpecs" : [ {
+      "name" : "admittime",
+      "type" : "localdatetime"
+    } ]
+  }, {
+    "label" : "Hcpcs",
+    "source" : "hosp/d_hcpcs.csv",
+    "idField" : "code",
+    "propertySpecs" : [ {
+      "name" : "code",
+      "type" : "string"
+    } ]
+  }, {
+    "label" : "Icd9",
+    "source" : "hosp/d_icd_diagnoses.csv",
+    "idField" : "icd_code",
+    "propertySpecs" : [ {
+      "name" : "icd_code",
+      "type" : "string"
+    } ],
+    "filterSpec" : {
+      "field" : "icd_version",
+      "value" : "9"
+    }
+  }, {
+    "label" : "Icd10",
+    "source" : "hosp/d_icd_diagnoses.csv",
+    "idField" : "icd_code",
+    "propertySpecs" : [ {
+      "name" : "icd_code",
+      "type" : "string"
+    } ],
+    "filterSpec" : {
+      "field" : "icd_version",
+      "value" : "10"
+    }
+  }, {
+    "label" : "Icd9Procedure",
+    "source" : "hosp/d_icd_procedures.csv",
+    "idField" : "icd_code",
+    "propertySpecs" : [ {
+      "name" : "icd_code",
+      "type" : "string"
+    } ],
+    "filterSpec" : {
+      "field" : "icd_version",
+      "value" : "9"
+    }
+  }, {
+    "label" : "Icd10Procedure",
+    "source" : "hosp/d_icd_procedures.csv",
+    "idField" : "icd_code",
+    "propertySpecs" : [ {
+      "name" : "icd_code",
+      "type" : "string"
+    } ],
+    "filterSpec" : {
+      "field" : "icd_version",
+      "value" : "10"
+    }
+  }, {
+    "label" : "LabItem",
+    "source" : "hosp/d_labitems.csv",
+    "idField" : "itemid"
+  }, {
+    "label" : "Diagnosis",
+    "source" : "hosp/diagnoses_icd.csv",
+    "idField" : "line_number",
+    "edgeSpecs" : [ {
+      "label" : "coded_as",
+      "toLabel" : "Icd9",
+      "toField" : "icd_code",
+      "filterSpec" : {
+        "field" : "icd_version",
+        "value" : "9"
+      }
+    }, {
+      "label" : "coded_as",
+      "toLabel" : "Icd10",
+      "toField" : "icd_code",
+      "filterSpec" : {
+        "field" : "icd_version",
+        "value" : "10"
+      }
+    } ],
+    "propertySpecs" : [ {
+      "name" : "icd_code",
+      "type" : "string"
+    } ]
+  }, {
+    "label" : "Procedure",
+    "source" : "hosp/procedures_icd.csv",
+    "idField" : "line_number",
+    "edgeSpecs" : [ {
+      "label" : "coded_as",
+      "toLabel" : "Icd9Procedure",
+      "toField" : "icd_code",
+      "filterSpec" : {
+        "field" : "icd_version",
+        "value" : "9"
+      }
+    }, {
+      "label" : "coded_as",
+      "toLabel" : "Icd10Procedure",
+      "toField" : "icd_code",
+      "filterSpec" : {
+        "field" : "icd_version",
+        "value" : "10"
+      }
+    } ],
+    "propertySpecs" : [ {
+      "name" : "icd_code",
+      "type" : "string"
+    } ]
+  }, {
+    "label" : "DrgCode",
+    "source" : "hosp/drgcodes.csv",
+    "idField" : "line_number"
+  }, {
+    "label" : "HcpcsEvent",
+    "source" : "hosp/hcpcsevents.csv",
+    "idField" : "line_number",
+    "edgeSpecs" : [ {
+      "label" : "coded_as",
+      "toLabel" : "Hcpcs",
+      "toField" : "code",
+      "fromField" : "hcpcs_cd"
+    } ],
+    "propertySpecs" : [ {
+      "name" : "hcpcs_cd",
+      "type" : "string"
+    } ]
+  }, {
+    "label" : "LabEvent",
+    "source" : "hosp/labevents.csv",
+    "idField" : "labevent_id",
+    "indexFields": ["itemid"],    
+    "edgeSpecs" : [ {
+      "label" : "has_lab_item",
+      "toLabel" : "LabItem",
+      "toField" : "itemid"
+    }, {
+      "label" : "ordered_by",
+      "toLabel" : "Provider",
+      "toField" : "provider_id",
+      "fromField" : "order_provider_id"
+    } ],
+    "propertySpecs" : [ {
+      "name" : "value",
+      "type" : "string",
+      "ignoreError" : true
+    }, {
+      "name" : "charttime",
+      "type" : "localdatetime"
+    } ]
+  }, {
+    "label" : "Emar",
+    "source" : "hosp/emar.csv",
+    "idField" : "emar_id",
+    "edgeSpecs" : [ {
+      "label" : "entered_by",
+      "toLabel" : "Provider",
+      "toField" : "provider_id",
+      "fromField" : "enter_provider_id"
+    } ]
+  }, {
+    "label" : "EmarDetail",
+    "source" : "hosp/emar_detail.csv",
+    "idField" : "line_number",
+    "edgeSpecs" : [ {
+      "label" : "describes",
+      "toLabel" : "Emar",
+      "toField" : "emar_id"
+    } ],
+    "propertySpecs" : [ {
+      "name" : "dose_given",
+      "type" : "string",
+      "ignoreError" : true
+    } ]
+  }, {
+    "label" : "MicroBiologyEvent",
+    "source" : "hosp/microbiologyevents.csv",
+    "idField" : "microevent_id",
+    "edgeSpecs" : [ {
+      "label" : "ordered_by",
+      "toLabel" : "Provider",
+      "toField" : "provider_id",
+      "fromField" : "order_provider_id"
+    } ]
+  }, {
+    "label" : "Omr",
+    "source" : "hosp/omr.csv",
+    "idField" : "line_number",
+    "propertySpecs" : [ {
+      "name" : "result_value",
+      "type" : "string"
+    } ]
+  }, {
+    "label" : "Pharmacy",
+    "source" : "hosp/pharmacy.csv",
+    "idField" : "pharmacy_id",
+    "edgeSpecs" : [ {
+      "label" : "has_prescription",
+      "toLabel" : "Prescription",
+      "toField" : "pharmacy_id"
+    } ]
+  }, {
+    "label" : "Poe",
+    "source" : "hosp/poe.csv",
+    "idField" : "poe_id",
+    "edgeSpecs" : [ {
+      "label" : "ordered_by",
+      "toLabel" : "Provider",
+      "toField" : "provider_id",
+      "fromField" : "order_provider_id"
+    } ]
+  }, {
+    "label" : "PoeDetail",
+    "source" : "hosp/poe_detail.csv",
+    "idField" : "line_number",
+    "edgeSpecs" : [ {
+      "label" : "describes",
+      "toLabel" : "Poe",
+      "toField" : "poe_id"
+    } ]
+  }, {
+    "label" : "Prescription",
+    "source" : "hosp/prescriptions.csv",
+    "idField" : "line_number",
+    "edgeSpecs" : [ {
+      "label" : "ordered_by",
+      "toLabel" : "Provider",
+      "toField" : "provider_id",
+      "fromField" : "order_provider_id"
+    } ],
+    "propertySpecs" : [ {
+      "name" : "dose_val_rx",
+      "type" : "string"
+    }, {
+      "name" : "form_val_disp",
+      "type" : "string"
+    }, {
+      "name" : "gsn",
+      "type" : "string"
+    }, {
+      "name" : "ndc",
+      "type" : "string"
+    } ]
+  }, {
+    "label" : "Provider",
+    "source" : "hosp/provider.csv",
+    "idField" : "provider_id"
+  }, {
+    "label" : "Service",
+    "source" : "hosp/services.csv",
+    "idField" : "line_number"
+  }, {
+    "label" : "Transfer",
+    "source" : "hosp/transfers.csv",
+    "idField" : "transfer_id",
+    "propertySpecs" : [ {
+      "name" : "intime",
+      "type" : "localdatetime"
+    }, {
+      "name" : "outtime",
+      "type" : "localdatetime"
+    } ]
+  }, {
+    "label" : "IcuStay",
+    "source" : "icu/icustays.csv",
+    "idField" : "stay_id",
+    "edgeSpecs" : [ {
+      "label" : "has_event",
+      "toLabel" : "ChartEvent",
+      "toField" : "stay_id"
+    }, {
+      "label" : "has_event",
+      "toLabel" : "DatetimeEvent",
+      "toField" : "stay_id"
+    }, {
+      "label" : "has_event",
+      "toLabel" : "IngredientEvent",
+      "toField" : "stay_id"
+    }, {
+      "label" : "has_event",
+      "toLabel" : "InputEvent",
+      "toField" : "stay_id"
+    }, {
+      "label" : "has_event",
+      "toLabel" : "OutputEvent",
+      "toField" : "stay_id"
+    }, {
+      "label" : "has_event",
+      "toLabel" : "ProcedureEvent",
+      "toField" : "stay_id"
+    } ],
+    "propertySpecs" : [ {
+      "name" : "los",
+      "type" : "string"
+    }, {
+      "name" : "intime",
+      "type" : "localdatetime"
+    }, {
+      "name" : "outtime",
+      "type" : "localdatetime"
+    } ]
+  }, {
+    "label" : "ChartEvent",
+    "source" : "icu/chartevents.csv",
+    "idField" : "seq_number",
+    "include" : [ "subject_id", "stay_id", "caregiver_id", "charttime", "seq_number" ],
+    "edgeSpecs" : [ {
+      "label" : "cared_by",
+      "toLabel" : "Caregiver",
+      "toField" : "caregiver_id"
+    } ],
+    "propertySpecs" : [ {
+      "name" : "charttime",
+      "type" : "localdatetime"
+    } ]
+  }, {
+    "label" : "ChartEventComponent",
+    "source" : "icu/charteventcomponents.csv",
+    "idField" : "line_number",
+    "exclude" : [ "subject_id", "hadm_id", "stay_id", "caregiver_id", "charttime" ],
+    "indexFields": ["itemid"],
+    "edgeSpecs" : [ {
+      "label" : "coded_as",
+      "toLabel" : "EventItem",
+      "toField" : "itemid"
+    }, {
+      "label" : "component_of",
+      "toLabel" : "ChartEvent",
+      "toField" : "seq_number"
+    } ],
+    "propertySpecs" : [ {
+      "name" : "valuenum",
+      "type" : "double"
+    }, {
+      "name" : "storetime",
+      "type" : "localdatetime"
+    } ]
+  }, {
+    "label" : "DatetimeEvent",
+    "source" : "icu/datetimeevents.csv",
+    "idField" : "line_number",
+    "edgeSpecs" : [ {
+      "label" : "cared_by",
+      "toLabel" : "Caregiver",
+      "toField" : "caregiver_id"
+    }, {
+      "label" : "coded_as",
+      "toLabel" : "EventItem",
+      "toField" : "itemid"
+    } ]
+  }, {
+    "label" : "IngredientEvent",
+    "source" : "icu/ingredientevents.csv",
+    "idField" : "line_number",
+    "edgeSpecs" : [ {
+      "label" : "cared_by",
+      "toLabel" : "Caregiver",
+      "toField" : "caregiver_id"
+    }, {
+      "label" : "coded_as",
+      "toLabel" : "EventItem",
+      "toField" : "itemid"
+    } ],
+    "propertySpecs" : [ {
+      "name" : "rate",
+      "type" : "double"
+    }, {
+      "name" : "originalrate",
+      "type" : "double"
+    }, {
+      "name" : "amount",
+      "type" : "double"
+    }, {
+      "name" : "originalamount",
+      "type" : "double"
+    } ]
+  }, {
+    "label" : "InputEvent",
+    "source" : "icu/inputevents.csv",
+    "idField" : "line_number",
+    "edgeSpecs" : [ {
+      "label" : "cared_by",
+      "toLabel" : "Caregiver",
+      "toField" : "caregiver_id"
+    }, {
+      "label" : "coded_as",
+      "toLabel" : "EventItem",
+      "toField" : "itemid"
+    } ],
+    "propertySpecs" : [ {
+      "name" : "starttime",
+      "type" : "localdatetime"
+    }, {
+      "name" : "endtime",
+      "type" : "localdatetime"
+    }, {
+      "name" : "storetime",
+      "type" : "localdatetime"
+    }, {
+      "name" : "rate",
+      "type" : "double"
+    }, {
+      "name" : "originalrate",
+      "type" : "double"
+    }, {
+      "name" : "amount",
+      "type" : "double"
+    }, {
+      "name" : "originalamount",
+      "type" : "double"
+    }, {
+      "name" : "totalamount",
+      "type" : "double"
+    }, {
+      "name" : "patientweight",
+      "type" : "double"
+    } ]
+  }, {
+    "label" : "OutputEvent",
+    "source" : "icu/outputevents.csv",
+    "idField" : "line_number",
+    "indexFields": ["itemid"],
+    "edgeSpecs" : [ {
+      "label" : "cared_by",
+      "toLabel" : "Caregiver",
+      "toField" : "caregiver_id"
+    }, {
+      "label" : "coded_as",
+      "toLabel" : "EventItem",
+      "toField" : "itemid"
+    } ],
+    "propertySpecs" : [ {
+      "name" : "charttime",
+      "type" : "localdatetime"
+    }, {
+      "name" : "storetime",
+      "type" : "localdatetime"
+    }, {
+      "name" : "value",
+      "type" : "double"
+    } ]
+  }, {
+    "label" : "ProcedureEvent",
+    "source" : "icu/procedureevents.csv",
+    "idField" : "line_number",
+    "edgeSpecs" : [ {
+      "label" : "cared_by",
+      "toLabel" : "Caregiver",
+      "toField" : "caregiver_id"
+    }, {
+      "label" : "coded_as",
+      "toLabel" : "EventItem",
+      "toField" : "itemid"
+    } ],
+    "propertySpecs" : [ {
+      "name" : "patientweight",
+      "type" : "double"
+    }, {
+      "name" : "value",
+      "type" : "double"
+    }, {
+      "name" : "originalamount",
+      "type" : "double"
+    } ]
+  }, {
+    "label" : "Caregiver",
+    "source" : "icu/caregiver.csv",
+    "idField" : "caregiver_id"
+  }, {
+    "label" : "EventItem",
+    "source" : "icu/d_items.csv",
+    "idField" : "itemid"
+  } ]
+}
