@@ -2,7 +2,8 @@
   "meta" : {
     "location" : "src/test/resources/data/mimic-iv-demo",
     "tmpLocation" : "/private/work/github-amida/profiles-ingest/sandbox",
-    "partitionKey" : "ReferenceId"
+    "partitionKey" : "ReferenceId",
+    "remoteLocation": "https://amida-tech.github.io/profiles-data/mimic-iv-demo-r1/"
   },
   "nodeSpecs" : [ {
     "label" : "Patient",
