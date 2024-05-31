@@ -1,0 +1,94 @@
+{
+  "meta": 
+	{
+	  "tmplocation": "sandbox",
+	  "partitionKey": "ReferenceId",
+	  "remotelocation":  "https://amida-tech.github.io/profiles-data/test-data-generator/"
+	},
+  "nodeSpecs": 
+	[
+		{
+		  "label": "Demographics",
+		  "source": "demographics_table.csv",
+		  "idField": "person_id",
+		  "edgeSpecs": 
+			[ {
+			    "label": "has_diagnosis",
+			    "toLabel": "Diagnosis",
+			    "toField": "person_id"
+ 			   },
+			   {
+			     "label": "has_benefit",
+			     "toLable": "Benefit",
+			     "toField": "person_id"
+			   },
+			   {
+			     "label": "has_medication",
+			     "toLabel": "Medicatioin",
+			     "toField", "person_id"
+			   }
+			],
+		  "propertySpecs":
+			[  {
+			      "name": "age",
+			      "type": "integer"
+			   }
+			]
+		},
+		{
+		  "label": "Diagnosis",
+		  "source": "diagnosis_table.csv",
+		  "idField": "line_number",
+		  "edgeSpecs": 
+			[  {
+			     "label": "diagnosis_of",
+			     "toLabel": "Demographics",
+			     "toField": "person_id"
+			   }
+			],
+		  "propertySpecs":
+			[  {
+			     "name": "diagnosis",
+			     "type": "string"
+			   }
+			]
+		},
+		{
+		  "label": "Benefit",
+		  "source": "benefits_table.csv",
+		  "idField": "line_number",
+		  "edgeSpecs":
+			[  {
+			     "label": "benefit_of",
+			     "toLabel": "Demographics",
+			     "toField": "person_id"
+			   }
+			],
+		  "propertySpecs":
+			[  {
+			     "name": "vasrd",
+			     "type": "string"
+			   }
+			]
+		},
+		{
+		  "label": "Medication",
+		  "source": medication_table.csv",
+		  "idField": "line_number",
+		  "edgeSpecs":
+			[  {
+			     "lable": "medication_of",
+			     "toLabel": "Demographics",
+			     "toField": "person_id"
+			   }
+			],
+		  "propertySpecs":
+			[  {
+			     "name": "drug",
+			     "type": "string"
+			   }
+			]
+		}
+	]
+}
+			
